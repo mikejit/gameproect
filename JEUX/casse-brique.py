@@ -59,7 +59,6 @@ x_zombie=810
 y_zombie=5
 zombiereference=pygame.Rect(x_zombie,y_zombie,1,1)
 zombie=pygame.image.load('zombie.png')
-
 # Creation zombies 
 def create_zombie(nb):
     zombies=[]
@@ -93,6 +92,7 @@ while run:
         
     if keys[pygame.K_SPACE]:
         sauter()
+        nb+=1
     if keys[pygame.K_RIGHT]:
         soldatreference.x=+1
     if keys[pygame.K_LEFT]:
