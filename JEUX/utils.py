@@ -9,7 +9,7 @@ GREEN=(0, 255, 0)
 BLUE=(0, 0, 255)
 BROWN=(102,51,0)
 SKYBLUE=(153,204,255)
-DARKBLUE(30, 70, 99)
+DarkSlateGray=(47, 79, 79)
 
 
 # Initialisation de la hauteur et la largeur de l´écran  
