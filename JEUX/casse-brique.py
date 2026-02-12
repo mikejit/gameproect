@@ -56,7 +56,7 @@ zombie=pygame.image.load('zombie.png')
 # -------- Boucle principale du jeu -----------
 while run:
     # fond d´écran
-    screen.fill(SKYBLUE)
+    screen.fill(DARKBLUE)
     # --- Gestion des évènements
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -64,14 +64,13 @@ while run:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print("clic souris")      
     keys = pygame.key.get_pressed()
-         
+    if keys[pygame.K_DOWN]:
+         y_soldat+=v
     if keys[pygame.K_SPACE]:
-        print('barre espace')
+        y_soldat-=v
     if keys[pygame.K_RIGHT]:
-        print("touche right")
         x_soldat+=v
     if keys[pygame.K_LEFT]:
-        print("touche gauche")
         x_soldat-=v
     if keys[pygame.K_ESCAPE]:
         run=False
