@@ -33,3 +33,7 @@ def main_menu():
                 options()
             if SETTINGS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 settings()
+    pygame.display.update()
+
+main_menu()
+
