@@ -23,9 +23,7 @@ rectangleterre1= pygame.Rect(90,360,400,50)
 #la plateforme en haut:
 rectanglehaut= pygame.Rect(650,150,400,10)
 rectangleterre2= pygame.Rect(650,160,400,50)
-#portal
-rectangleportal=pygame.Rect(920,35,10,30) 
-portal=pygame.image.load('portal.png')
+
 
 
 
@@ -60,19 +58,20 @@ y_zombie=5
 zombiereference=pygame.Rect(x_zombie,y_zombie,1,1)
 zombie=pygame.image.load('zombie.png')
 # Creation zombies 
-def create_zombie(nb):
+def create_zombie():
     zombies=[]
-    for i in range (nb):
-        rectangle = random.choice([rectanglebas, rectanglehaut])
+    for i in range (3):
+        rectangle = rdm.choice([rectanglebas, rectanglehaut])
         if rectangle == rectanglebas:
-            x_bas = random.randint(90,490)
+            x_bas = rdm.randint(90,490)
             y_bas = 350
-            zombies.append([x_bas, y_bas])
+            zombies.append([x_bas, y_bas], zombie)
         else:
-            x_haut = random.randint(650,1050)
+            x_haut = rdm.randint(650,1050)
             y_haut = 150
-            zombies.append([x_haut, y_haut])
-            
+            zombies.append([x_haut, y_haut], zombie)
+    
+        return zombies     
 #Level 1 
 
 
@@ -80,7 +79,7 @@ def create_zombie(nb):
 # -------- Boucle principale du jeu -----------
 while run:
     # fond d´écran
-    screen.fill(DARKBLUE)
+    screen.fill(DarkSlateGray)
     # --- Gestion des évènements
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -89,14 +88,13 @@ while run:
                 print("clic souris")      
     keys = pygame.key.get_pressed()
     if keys[pygame.K_DOWN]:
-        
+        y_soldat+=v
     if keys[pygame.K_SPACE]:
         sauter()
-        nb+=1
     if keys[pygame.K_RIGHT]:
-        soldatreference.x=+1
+        soldatreference.x_soldat+=v
     if keys[pygame.K_LEFT]:
-        soldatreference.x=-1
+        soldatreference.x_soldat-=v
     if keys[pygame.K_ESCAPE]:
         run=False
     
@@ -106,8 +104,7 @@ while run:
     pygame.draw.rect(screen,GREEN,rectanglebas)
     pygame.draw.rect(screen,GREEN,rectanglehaut)
     pygame.draw.rect(screen,BROWN,rectangleterre1)
-    pygame.draw.rect(screen,BROWN,rectangleterre2)
-    screen.blit(portal,rectangleportal) 
+    pygame.draw.rect(screen,BROWN,rectangleterre2) 
     screen.blit(soldat,soldatreference)
     screen.blit(zombie,zombiereference)
     # Mouvements de la balle
@@ -125,4 +122,3 @@ while run:
 time.sleep(0.2)
 # On sort de la boucle et on quitte
 pygame.quit()
- 
