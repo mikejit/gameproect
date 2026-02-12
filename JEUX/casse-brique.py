@@ -60,6 +60,23 @@ y_zombie=5
 zombiereference=pygame.Rect(x_zombie,y_zombie,1,1)
 zombie=pygame.image.load('zombie.png')
 
+# Creation zombies 
+def create_zombie(nb):
+    zombies=[]
+    for i in range (nb):
+        rectangle = random.choice([rectanglebas, rectanglehaut])
+        if rectangle == rectanglebas:
+            x_bas = random.randint(90,490)
+            y_bas = 350
+            zombies.append([x_bas, y_bas])
+        else:
+            x_haut = random.randint(650,1050)
+            y_haut = 150
+            zombies.append([x_haut, y_haut])
+            
+#Level 1 
+
+
     # rect_vaisseau=vaisseau.get_rect()
 # -------- Boucle principale du jeu -----------
 while run:
