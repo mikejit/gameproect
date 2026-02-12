@@ -9,10 +9,10 @@ def play():
 
         PLAY_TEXT = get_font(45).render("This is the play screen.", True, "White")
         PLAY_RECT = PLAY_TEXT.get_rect
-        SCREE.blit(PLAY_TEXT, PLAY_RECT)
+        SCREEN.blit(PLAY_TEXT, PLAY_RECT)
 
-        PLAY_BACK = Button(image=None, pos(640, 460), 
-                            text_input="BACK", font =get_font(75), base_color="White", hovering_color="Green)
+        PLAY_BACK = button(image=None, pos=(640, 460), 
+                            text_input="BACK", font =get_font(75), base_color="White", hovering_color="Green")
 
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
@@ -22,7 +22,7 @@ def play():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS)
+                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
 
         pygame.display.update()
@@ -39,8 +39,8 @@ def options():
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640,260))
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
-        OPTIONS_BACK= Button(image=None, pos(640,460),
-                            text_input="BACK", font =get_font(75), base_color="Black, hovering_color="Green")
+        OPTIONS_BACK= button(image=None, pos=(640,460),
+                            text_input="BACK", font =get_font(75), base_color="Black", hovering_color="Green")
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(SCREEN)
@@ -50,7 +50,7 @@ def options():
                 pygame.qui()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if OPTIONS_BACK.checkForInput(OPTIONS_MOUE_POS):
+                if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     main_menu()
 
         pygame.display.update()
@@ -66,12 +66,12 @@ def settings():
 
         SETTINGS_TEXT = get_font(45).render("This is the SETTINGS screeen.", True, "Black")
         SETTINGS_RECT = SETTINGS_TEXT.get_rect(center=(640,260))
-        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+        SCREEN.blit(SETTINGS_TEXT , SETTINGS_RECT)
 
-        SETTINGS_BACK = Button(image=None, pos(640,460), 
+        SETTINGS_BACK = button(image=None, pos=(640,460), 
                             text_input="BACK", font = get_font(75), base_color="Black", hovering_color="Green")
 
-        SETTINGS_BACK.changeColor(OPTIONS_MOUSE_POS)
+        SETTINGS_BACK.changeColor(SETTINGS_MOUSE_POS)
         SETTINGS_BACK.update(SCREEN)
 
         for event in pygame.event.get():
@@ -103,17 +103,17 @@ def main_menu():
 
     MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-    MENU_TEXT = get_font(100).render("MAIN MENU", True, #FFFFFF)
+    MENU_TEXT = get_font(100).render("MAIN MENU", True, "#FFFFFF")
     MENU_RECT = MENU_TEXT.get_rect(center= (640, 100))
 
-    PLAY_BUTTON = Button(image=pygame.image.load(assests/Play Rect.png), pos=(640, 250),
-                        text_input="PLAY", font=get_font(75), base_color = #d7fcd4, hovering_color="White")
-    OPTION_BUTTON = Button(image=pygame.image.load(assests/Options Rect.png), pos=(640, 400),
-                        text_input="OPTIONS", font = get_font(75), base_color = #d7fcd4, hovering_color="White")
-    SETTINGS_BUTTON = Button(image=pygame.image.load(assests/Settings Rect.png), pos(640, 550),
-                            text_input="SETTINGS", font = get_font(75), base_color = #d7fcd4, hovering_color="White")
-    QUIT_BUTTON = Button(image=pygame.image.load(assests/Quit Rect.png), pos(640,700), 
-                        text_input="QUIT", font = get_font(75), base_color = #d7fcd4, hovering_color="White)
+    PLAY_BUTTON = button (image=pygame.image.load=(assests/Play Rect.png), pos=(640, 250),
+                        text_input="PLAY", font=get_font(75), base_color = "#d7fcd4", hovering_color="White")
+    OPTION_BUTTON = button(image=pygame.image.load=(assests/Options Rect.png), pos=(640, 400),
+                        text_input="OPTIONS", font = get_font(75), base_color = "#d7fcd4", hovering_color="White")
+    SETTINGS_BUTTON = button(image=pygame.image.load=(assests/Settings Rect.png), pos(640, 550),
+                            text_input="SETTINGS", font = get_font(75), base_color = "#d7fcd4", hovering_color="White")
+    QUIT_BUTTON = button (image=pygame.image.load=(assests/Quit Rect.png), pos(640,700), 
+                        text_input="QUIT", font = get_font(75), base_color = "#d7fcd4", hovering_color="White")
 
     SCREEN.blit(MENU_TEXT, MENU_RECT)
                             
@@ -138,11 +138,3 @@ def main_menu():
     pygame.display.update()
 
 main_menu()
-
-
-
-
-
-
-
-
