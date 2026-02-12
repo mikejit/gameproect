@@ -1,3 +1,17 @@
+def play():
+    pygame.display.set_caption("Play")
+
+    while True:
+
+        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+
+        SCREEN.fill("black")
+
+        PLAY_TEXT = get_font(45).render("This is the play screen.", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect
+
+
+
 def main_menu():
   pygame.display.set_caption:("Menu")
 
@@ -41,5 +55,6 @@ def main_menu():
     pygame.display.update()
 
 main_menu()
+
 
 
