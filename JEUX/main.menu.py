@@ -22,3 +22,14 @@ def main_menu():
         button.changeColor(MENU_MOUSE_POS)
         button.update(SCREEN)
       
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          pygame.quit()
+          sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                play()
+            if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                options()
+            if SETTINGS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                settings()
