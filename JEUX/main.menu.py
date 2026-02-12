@@ -9,6 +9,39 @@ def play():
 
         PLAY_TEXT = get_font(45).render("This is the play screen.", True, "White")
         PLAY_RECT = PLAY_TEXT.get_rect
+        SCREE.blit(PLAY_TEXT, PLAY_RECT)
+
+        PLAY_BACK = Button(image=None, pos(640, 460), 
+                            text_input="BACK", font =get_font(75), base_color="White", hovering_color="Green)
+
+        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
+        PLAY_BACK.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type== pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS)
+                    main_menu()
+
+        pygame.display.update()
+
+def options():
+    pygame.display.set_caption("Options")
+
+    while True: 
+        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+
+        SCREEN.fill("white")
+
+        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen." True, "Black")
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640,260))
+        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+
+        OPTIONS_BACK= Button(image=None, pos(640,460), 
+                             
+        
 
 
 
@@ -55,6 +88,7 @@ def main_menu():
     pygame.display.update()
 
 main_menu()
+
 
 
 
