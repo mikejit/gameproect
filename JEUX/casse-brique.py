@@ -41,9 +41,17 @@ y_soldat=265
 soldatreference=pygame.Rect(x_soldat,y_soldat,1,1)
 soldat=pygame.image.load('soldat.png')
 v=5
+#fonction jump pour faire sauter le soldat
 
-
-
+def sauter():
+    g=9.8
+    vi=0
+    while y_soldat>=265:
+        vi += g
+        y_soldat +=vi
+    if y_soldat<=265:
+        vi=0
+        y_soldat=265
 
 
 #zombies 
@@ -65,13 +73,13 @@ while run:
                 print("clic souris")      
     keys = pygame.key.get_pressed()
     if keys[pygame.K_DOWN]:
-         y_soldat+=v
+        
     if keys[pygame.K_SPACE]:
-        y_soldat-=v
+        
     if keys[pygame.K_RIGHT]:
-        x_soldat+=v
+        soldatreference.x=+1
     if keys[pygame.K_LEFT]:
-        x_soldat-=v
+        soldatreference.x=-1
     if keys[pygame.K_ESCAPE]:
         run=False
     
