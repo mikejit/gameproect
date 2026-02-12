@@ -78,6 +78,10 @@ def settings():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if SETTINGS_BACK.checkForInput(SETTINGS_MOUSE_POS):
+                    main_menu()
+        pygame.display.update()
 
 
 
@@ -133,6 +137,7 @@ def main_menu():
     pygame.display.update()
 
 main_menu()
+
 
 
 
