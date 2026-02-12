@@ -95,7 +95,8 @@ def settings():
 
 
 def main_menu():
-  pygame.display.set_caption:("Menu")
+    pygame.display.set_caption:("Menu")
+
 
   while True:
     SCREEN.blit(BG,(0,0))
@@ -137,6 +138,7 @@ def main_menu():
     pygame.display.update()
 
 main_menu()
+
 
 
 
