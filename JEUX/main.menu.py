@@ -13,8 +13,10 @@ def main_menu():
                         text_input="PLAY", font=get_font(75), base_color = #d7fcd4, hovering_color="White")
     OPTION_BUTTON = Button(image=pygame.image.load(assests/Options Rect.png), pos=(640, 400),
                         text_input="OPTIONS", font = get_font(75), base_color = #d7fcd4, hovering_color="White")
-    SETTINGS_BUTTON = Button(image=pygame.image.load(assests/Play Rect.png), pos(640, 550),
+    SETTINGS_BUTTON = Button(image=pygame.image.load(assests/Settings Rect.png), pos(640, 550),
                             text_input="SETTINGS", font = get_font(75), base_color = #d7fcd4, hovering_color="White")
+    QUIT_BUTTON = Button(image=pygame.image.load(assests/Quit Rect.png), pos(640,700), 
+                        text_input="QUIT", font = get_font(75), base_color = #d7fcd4, hovering_color="White)
 
     SCREEN.blit(MENU_TEXT, MENU_RECT)
                             
@@ -33,7 +35,11 @@ def main_menu():
                 options()
             if SETTINGS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 settings()
+            if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                pygame.quit()
+                sys.exit()
     pygame.display.update()
 
 main_menu()
+
 
