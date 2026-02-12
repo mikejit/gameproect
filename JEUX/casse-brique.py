@@ -75,7 +75,7 @@ while run:
     if keys[pygame.K_DOWN]:
         
     if keys[pygame.K_SPACE]:
-        
+        sauter()
     if keys[pygame.K_RIGHT]:
         soldatreference.x=+1
     if keys[pygame.K_LEFT]:
