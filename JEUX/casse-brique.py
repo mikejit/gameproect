@@ -16,8 +16,8 @@ clock = pygame.time.Clock()
 
 
 # la plateforme en bas :
-rectanglebas= pygame.Rect(90,350,400,10)
-rectangleterre1= pygame.Rect(90,360,400,50)
+rectanglebas= pygame.Rect(90,350,450,10)
+rectangleterre1= pygame.Rect(90,360,450,50)
 
 
 #la plateforme en haut:
@@ -25,8 +25,11 @@ rectanglehaut= pygame.Rect(650,150,400,10)
 rectangleterre2= pygame.Rect(650,160,400,50)
 
 
-
-
+#variables de jump
+saut=False
+jh=20
+g=1
+vy=jh
     
 
 
@@ -36,21 +39,10 @@ run = True
 #soldat
 x_soldat=175
 y_soldat=265
-soldatreference=pygame.Rect(x_soldat,y_soldat,1,1)
-soldat=pygame.image.load('soldat.png')
+soldat=pygame.image.load('soldat.png').convert_alpha()
+soldatreference = soldat.get_rect()
+soldatreference.topleft = (x_soldat, y_soldat)
 v=5
-#fonction jump pour faire sauter le soldat
-
-def sauter():
-    g=9.8
-    vi=0
-    while y_soldat>=265:
-        vi += g
-        y_soldat +=vi
-    if y_soldat<=265:
-        vi=0
-        y_soldat=265
-
 
 #zombies 
 x_zombie=810
@@ -87,19 +79,37 @@ while run:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print("clic souris")      
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_DOWN]:
-        y_soldat+=v
+
+    #para fazer o agaixamento do soldado temos que fazer uma foto differente do gajo 
+    #kiko tenta fazer um png mais pequeno ou nsei pto 
+    
     if keys[pygame.K_SPACE]:
-        sauter()
+        saut=True
+    if saut: 
+        soldatreference.y-=vy
+        #effet de graviter sur le saut
+        vy-=g
+        if vy<-jh:
+            saut=False
+            vy=jh
     if keys[pygame.K_RIGHT]:
-        soldatreference.x_soldat+=v
+        soldatreference.x+=v
     if keys[pygame.K_LEFT]:
-        soldatreference.x_soldat-=v
+        soldatreference.-=v
     if keys[pygame.K_ESCAPE]:
         run=False
     
+    #si le joueur tombe
+    if soldatreference.x>=505 or soldatreference.x<=15:
+        v=0
+        soldatreference.y+=g
+        if soldatreference.y>=480:
+            soldatreference.x=175
+            soldatreference.y=265
+            v=5
 
-
+    #kiko faz um ecra game over 
+    
     # Dessins
     pygame.draw.rect(screen,GREEN,rectanglebas)
     pygame.draw.rect(screen,GREEN,rectanglehaut)
