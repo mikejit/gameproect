@@ -2,6 +2,8 @@ import pygame, sys
 import random as rdm
 from utils import *
 import time
+import math
+
 
 pygame.init()
 
@@ -39,16 +41,17 @@ run = True
 #soldat
 x_soldat=175
 y_soldat=265
-soldat=pygame.image.load('soldat.png').convert_alpha()
+soldat=pygame.image.load("soldat.png").convert_alpha()
 soldatreference = soldat.get_rect()
 soldatreference.topleft = (x_soldat, y_soldat)
-v=5
+v_soldat=5
 
 #zombies 
 x_zombie=810
 y_zombie=5
 zombiereference=pygame.Rect(x_zombie,y_zombie,1,1)
 zombie=pygame.image.load('zombie.png')
+v_zombie=2
 # Creation zombies 
 def create_zombie():
     zombies=[]
@@ -63,7 +66,10 @@ def create_zombie():
             y_haut = 150
             zombies.append([x_haut, y_haut], zombie)
     
-        return zombies     
+        return zombies 
+
+
+    
 #Level 1 
 
 
@@ -79,7 +85,25 @@ while run:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print("clic souris")      
     keys = pygame.key.get_pressed()
+    # mouvement zombie
+    # direction vers le soldat
+    direction_x = soldatreference.x - x_zombie
+    
+    
+    #ai 
+    distance = math.sqrt(direction_x**2 )
 
+    if distance != 0:
+        direction_x = direction_x / distance
+    #/ai    
+
+    # déplacement du zombie
+    x_zombie += direction_x * v_zombie
+    
+
+    # mise à jour du rectangle du zombie
+    zombiereference.x = x_zombie
+    
     #para fazer o agaixamento do soldado temos que fazer uma foto differente do gajo 
     #kiko tenta fazer um png mais pequeno ou nsei pto 
     
@@ -93,9 +117,9 @@ while run:
             saut=False
             vy=jh
     if keys[pygame.K_RIGHT]:
-        soldatreference.x+=v
+        soldatreference.x+=v_soldat
     if keys[pygame.K_LEFT]:
-        soldatreference.-=v
+        soldatreference.x-=v_soldat
     if keys[pygame.K_ESCAPE]:
         run=False
     
@@ -132,3 +156,4 @@ while run:
 time.sleep(0.2)
 # On sort de la boucle et on quitte
 pygame.quit()
+
