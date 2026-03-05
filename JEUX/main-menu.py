@@ -6,7 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((1280,720))
 pygame.display.set_caption("MENU")
 
-BG = pygame.image.load("assets/Background.png")
+BG = pygame.image.load("assets/black-screen-texture-acimaxbsvtwb9dwq.jpg")
 
 def get_font(size):
     any
@@ -145,3 +145,4 @@ def main_menu():
         pygame.display.update()
 
 main_menu()
+
