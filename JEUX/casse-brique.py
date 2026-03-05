@@ -7,6 +7,8 @@ import math
 
 pygame.init()
 
+epee_son = pygame.mixer.Sound("epeeson.mp3")
+
 # initialisation de l´écran avec sa taille et le titre
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("PLAY")
@@ -36,6 +38,7 @@ vy=jh
 
 
 run = True
+# variable du tir
 
 #Personnages 
 #soldat
@@ -107,7 +110,7 @@ while run:
     #para fazer o agaixamento do soldado temos que fazer uma foto differente do gajo 
     #kiko tenta fazer um png mais pequeno ou nsei pto 
     
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
         saut=True
     if saut: 
         soldatreference.y-=vy
@@ -122,6 +125,9 @@ while run:
         soldatreference.x-=v_soldat
     if keys[pygame.K_ESCAPE]:
         run=False
+    if keys[pygame.K_RETURN]:
+        tir=True
+        epee_son.play()
     
     #si le joueur tombe
     if soldatreference.x>=505 or soldatreference.x<=15:
@@ -141,7 +147,7 @@ while run:
     pygame.draw.rect(screen,BROWN,rectangleterre2) 
     screen.blit(soldat,soldatreference)
     screen.blit(zombie,zombiereference)
-    # Mouvements de la balle
+
 
     
 
@@ -156,4 +162,3 @@ while run:
 time.sleep(0.2)
 # On sort de la boucle et on quitte
 pygame.quit()
-
