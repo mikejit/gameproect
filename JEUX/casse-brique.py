@@ -1,164 +1,91 @@
-import pygame, sys
-import random as rdm
+import pygame, sys, random as rdm, time, math
 from utils import *
-import time
-import math
-
 
 pygame.init()
 
-epee_son = pygame.mixer.Sound("epeeson.mp3")
-
-# initialisation de l´écran avec sa taille et le titre
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("PLAY")
-
-# gestion de la vitesse de rafraichissement de l´écran
 clock = pygame.time.Clock()
 
-
-
-
-# la plateforme en bas :
+#plateforme
 rectanglebas= pygame.Rect(90,350,450,10)
 rectangleterre1= pygame.Rect(90,360,450,50)
-
-
-#la plateforme en haut:
 rectanglehaut= pygame.Rect(650,150,400,10)
 rectangleterre2= pygame.Rect(650,160,400,50)
 
-
-#variables de jump
-saut=False
-jh=20
-g=1
-vy=jh
-    
-
-
-run = True
-# variable du tir
-
-#Personnages 
 #soldat
+soldat=pygame.image.load("soldat.png").convert_alpha()
 x_soldat=175
 y_soldat=265
-soldat=pygame.image.load("soldat.png").convert_alpha()
-soldatreference = soldat.get_rect()
-soldatreference.topleft = (x_soldat, y_soldat)
+soldatreference = soldat.get_rect(topleft=(x_soldat,y_soldat))
 v_soldat=5
 
-#zombies 
-x_zombie=810
-y_zombie=5
-zombiereference=pygame.Rect(x_zombie,y_zombie,1,1)
-zombie=pygame.image.load('zombie.png')
-v_zombie=2
-# Creation zombies 
-def create_zombie():
-    zombies=[]
-    for i in range (3):
-        rectangle = rdm.choice([rectanglebas, rectanglehaut])
-        if rectangle == rectanglebas:
-            x_bas = rdm.randint(90,490)
-            y_bas = 350
-            zombies.append([x_bas, y_bas], zombie)
-        else:
-            x_haut = rdm.randint(650,1050)
-            y_haut = 150
-            zombies.append([x_haut, y_haut], zombie)
-    
-        return zombies 
+# variables saut
+vy = 0
+g = 1
+saut = False
 
+# zombie
+zombie=pygame.image.load("zombie.png").convert_alpha()
+x_zombie = 810
+y_zombie = 5
+zombiereference = zombie.get_rect(topleft=(x_zombie,y_zombie))
+v_zombie = 2
 
-    
-#Level 1 
+run = True
 
-
-    # rect_vaisseau=vaisseau.get_rect()
-# -------- Boucle principale du jeu -----------
 while run:
-    # fond d´écran
     screen.fill(DarkSlateGray)
-    # --- Gestion des évènements
-    for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                print("clic souris")      
     keys = pygame.key.get_pressed()
-    # mouvement zombie
-    # direction vers le soldat
-    direction_x = soldatreference.x - x_zombie
-    
-    
-    #ai 
-    distance = math.sqrt(direction_x**2 )
 
-    if distance != 0:
-        direction_x = direction_x / distance
-    #/ai    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
 
-    # déplacement du zombie
-    x_zombie += direction_x * v_zombie
-    
-
-    # mise à jour du rectangle du zombie
-    zombiereference.x = x_zombie
-    
-    #para fazer o agaixamento do soldado temos que fazer uma foto differente do gajo 
-    #kiko tenta fazer um png mais pequeno ou nsei pto 
-    
-    if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
-        saut=True
-    if saut: 
-        soldatreference.y-=vy
-        #effet de graviter sur le saut
-        vy-=g
-        if vy<-jh:
-            saut=False
-            vy=jh
     if keys[pygame.K_RIGHT]:
-        soldatreference.x+=v_soldat
+        soldatreference.x += v_soldat
     if keys[pygame.K_LEFT]:
-        soldatreference.x-=v_soldat
-    if keys[pygame.K_ESCAPE]:
-        run=False
-    if keys[pygame.K_RETURN]:
-        tir=True
-        epee_son.play()
-    
-    #si le joueur tombe
-    if soldatreference.x>=505 or soldatreference.x<=15:
-        v=0
-        soldatreference.y+=g
-        if soldatreference.y>=480:
-            soldatreference.x=175
-            soldatreference.y=265
-            v=5
+        soldatreference.x -= v_soldat
 
-    #kiko faz um ecra game over 
-    
+    #saut
+    if keys[pygame.K_SPACE] and not saut:
+        vy = -20
+        saut = True
+
+    # G
+    vy += g
+    soldatreference.y += vy
+
+    # plateform de bas
+    if 90 <= soldatreference.x <= 540:
+        if soldatreference.y >= 265:
+            soldatreference.y = 265
+            vy = 0
+            saut = False
+    #platefforme du haut
+    if 650 <= soldatreference.x <= 1050:
+        if 65 <= soldatreference.y <= 150:
+            soldatreference.y = 65
+            vy = 0
+            saut = False
+
+    # zombies automatiques
+    direction_x = soldatreference.x - x_zombie
+    distance = abs(direction_x)
+    if distance != 0:
+        direction_x /= distance
+    x_zombie += direction_x * v_zombie
+    zombiereference.x = x_zombie
+
     # Dessins
     pygame.draw.rect(screen,GREEN,rectanglebas)
     pygame.draw.rect(screen,GREEN,rectanglehaut)
     pygame.draw.rect(screen,BROWN,rectangleterre1)
-    pygame.draw.rect(screen,BROWN,rectangleterre2) 
+    pygame.draw.rect(screen,BROWN,rectangleterre2)
     screen.blit(soldat,soldatreference)
     screen.blit(zombie,zombiereference)
 
-
-    
-
-    
-
-
-    # 60 mises à jour par seconde
     clock.tick(100)
-    # mise à jour de l´écran
     pygame.display.update()
 
-time.sleep(0.2)
-# On sort de la boucle et on quitte
 pygame.quit()
