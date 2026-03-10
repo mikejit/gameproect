@@ -13,8 +13,8 @@ DarkSlateGray=(47, 79, 79)
 
 
 # Initialisation de la hauteur et la largeur de l´écran  
-W = 1020
-H = 480
+W = 1200
+H = 580
 size = [W, H]
 
 
