@@ -28,7 +28,7 @@ saut = False
 # zombie
 zombie=pygame.image.load("zombie.png").convert_alpha()
 x_zombie = 810
-y_zombie = 5
+y_zombie = 105
 zombiereference = zombie.get_rect(topleft=(x_zombie,y_zombie))
 v_zombie = 2
 
