@@ -3,20 +3,20 @@ from utils import *
 
 pygame.init()
 
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode((1200,580))
 pygame.display.set_caption("PLAY")
 clock = pygame.time.Clock()
 
-#plateforme
-rectanglebas= pygame.Rect(90,350,450,10)
-rectangleterre1= pygame.Rect(90,360,450,50)
-rectanglehaut= pygame.Rect(650,150,400,10)
-rectangleterre2= pygame.Rect(650,160,400,50)
+#plateforme 
+rectanglebas = pygame.Rect(90, 450, 450, 10)
+rectangleterre1 = pygame.Rect(90, 460, 450, 50)
+rectanglehaut = pygame.Rect(650, 250, 400, 10)
+rectangleterre2 = pygame.Rect(650, 260, 400, 50)
 
 #soldat
 soldat=pygame.image.load("soldat.png").convert_alpha()
 x_soldat=175
-y_soldat=265
+y_soldat=365
 soldatreference = soldat.get_rect(topleft=(x_soldat,y_soldat))
 v_soldat=5
 
@@ -56,16 +56,16 @@ while run:
     vy += g
     soldatreference.y += vy
 
-    # plateform de bas
+    # plateforme de bas
     if 90 <= soldatreference.x <= 540:
-        if soldatreference.y >= 265:
-            soldatreference.y = 265
+        if soldatreference.y >= 365:
+            soldatreference.y = 365
             vy = 0
             saut = False
     #platefforme du haut
     if 650 <= soldatreference.x <= 1050:
-        if 65 <= soldatreference.y <= 150:
-            soldatreference.y = 65
+        if 165 <= soldatreference.y <= 250 and vy >= 0:
+            soldatreference.y = 165
             vy = 0
             saut = False
 
