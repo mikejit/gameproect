@@ -1,55 +1,54 @@
-
 import pygame, sys, random as rdm, time, math
 from utils import *
 import subprocess
 
 pygame.init()
-
-screen = pygame.display.set_mode((1200,580))
+screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
 clock = pygame.time.Clock()
 
-#plateforme 
-rectanglebas = pygame.Rect(90, 450, 450, 10)
-rectangleterre1 = pygame.Rect(90, 460, 450, 50)
-rectanglehaut = pygame.Rect(650, 250, 400, 10)
-rectangleterre2 = pygame.Rect(650, 260, 400, 50)
+# platformes
+plateforme_bas = pygame.Rect(90, 450, 450, 20)
+plateforme_terre_bas = pygame.Rect(90, 460, 450, 50)
+plateforme_haut = pygame.Rect(650, 250, 400, 20)
+plateforme_terre_haut = pygame.Rect(650, 260, 400, 50)
 
 #soldat
-soldat=pygame.image.load("soldat.png").convert_alpha()
-x_soldat=175
-y_soldat=365
-soldatreference = soldat.get_rect(topleft=(x_soldat,y_soldat))
-v_soldat=5
+soldat = pygame.image.load("soldat.png").convert_alpha()
+soldat_rect = soldat.get_rect(topleft=(175, 365))
+vitesse_soldat = 5
 
-# variables saut
-vy = 0
-g = 1
-saut = False
+#var saut
+vitesse_y_soldat = 0
+gravite = 0.8
+peut_sauter = False
 
-# zombie
-zombie=pygame.image.load("zombie.png").convert_alpha()
-x_zombie = 810
-y_zombie = 105
-zombiereference = zombie.get_rect(topleft=(x_zombie,y_zombie))
-v_zombie = 2
+# zomby
+zombie = pygame.image.load("zombie.png").convert_alpha()
+zombie_rect = zombie.get_rect(topleft=(810, 105))
+vitesse_zombie = 2
 
-player_health = 100
-zombie_health = 50
-zombie_last_bite = 0  
-bite_cooldown = 1000  
-can_damage_zombie = True 
-vy_zombie = 0
+# vie combat
+vie_joueur = 100
+vie_zombie = 50
+dernier_morsure = 0
+delai_morsure = 1000
+peut_frapper_zombie = True
+vitesse_y_zombie = 0
+
+# Offset pour que les pieds touchent bien la plateforme
+decalage_pieds = 17
 
 run = True
 
+
 def show_pause_menu(screen):
-    # Semi-transparent overlay
+    # Overlay semi-transparent
     overlay = pygame.Surface((1200, 580), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 150))
     screen.blit(overlay, (0, 0))
 
-    # Popup box
+    # Boîte de pause
     popup = pygame.Rect(400, 150, 400, 280)
     pygame.draw.rect(screen, (50, 50, 50), popup)
     pygame.draw.rect(screen, (255, 255, 255), popup, 3)
@@ -57,17 +56,14 @@ def show_pause_menu(screen):
     font_title = pygame.font.SysFont(None, 50)
     font_btn = pygame.font.SysFont(None, 40)
 
-    # Title
     title = font_title.render("PAUSED", True, (255, 255, 255))
     screen.blit(title, (550, 170))
 
-    # Buttons
     btn_menu = pygame.Rect(450, 240, 300, 50)
     btn_settings = pygame.Rect(450, 310, 300, 50)
     btn_quit = pygame.Rect(450, 380, 300, 50)
 
     mouse = pygame.mouse.get_pos()
-
     for btn, label in [(btn_menu, "Main Menu"), (btn_settings, "Settings"), (btn_quit, "Quit")]:
         color = (100, 100, 100) if btn.collidepoint(mouse) else (70, 70, 70)
         pygame.draw.rect(screen, color, btn)
@@ -78,9 +74,7 @@ def show_pause_menu(screen):
 
     pygame.display.update()
 
-    
-
-    # Wait for click or ESC to close
+    # Attente du clic ou ESC
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,7 +82,7 @@ def show_pause_menu(screen):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return  # Resume game
+                    return  # Reprendre le jeu
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if btn_menu.collidepoint(event.pos):
                     pygame.quit()
@@ -102,81 +96,85 @@ def show_pause_menu(screen):
                     pygame.quit()
                     sys.exit()
 
+
 while run:
     screen.fill(DarkSlateGray)
     keys = pygame.key.get_pressed()
 
-    
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
         if event.type == pygame.KEYDOWN:
-            if event.key== pygame.K_ESCAPE:
+            if event.key == pygame.K_ESCAPE:
                 show_pause_menu(screen)
-            
-    if keys[pygame.K_UP] and not saut:
-        vy = -20
-        saut = True
 
-    vy += g
-    soldatreference.y += vy
-    
+    # Mouvement horizontal du soldat
+    if keys[pygame.K_LEFT]:
+        soldat_rect.x -= vitesse_soldat
+    if keys[pygame.K_RIGHT]:
+        soldat_rect.x += vitesse_soldat
 
-    
-    if zombie_health > 0:
-        # Gravity for zombie
-        vy_zombie += g
-        zombiereference.y += vy_zombie
+    # Saut
+    if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and not peut_sauter:
+        vitesse_y_soldat = -18
+        peut_sauter = True
 
-        # Follow player (Horizontal only)
-        if soldatreference.x > zombiereference.x:
-            zombiereference.x += v_zombie
+    vitesse_y_soldat += gravite
+    soldat_rect.y += vitesse_y_soldat
+
+    if vie_zombie > 0:
+        # Gravité du zombie
+        vitesse_y_zombie += gravite
+        zombie_rect.y += vitesse_y_zombie
+
+        # Le zombie suit le joueur
+        if soldat_rect.x > zombie_rect.x:
+            zombie_rect.x += vitesse_zombie
         else:
-            zombiereference.x -= v_zombie
+            zombie_rect.x -= vitesse_zombie
 
-    # --- 3. PLATFORM COLLISIONS (For both Player and Zombie) ---
-    # Put both in a list to check them easily
-    for rect in [rectanglebas, rectanglehaut]:
-        # Player collision
-        if soldatreference.colliderect(rect) and vy >= 0:
-            soldatreference.bottom = rect.top
-            vy = 0
-            saut = False
-        
-        # Zombie collision
-        if zombiereference.colliderect(rect) and vy_zombie >= 0:
-            zombiereference.bottom = rect.top
-            vy_zombie = 0
+    # contact avec les platformes
+    for rect in [plateforme_bas, plateforme_haut]:
+        # Collision soldat
+        if soldat_rect.colliderect(rect) and vitesse_y_soldat >= 0:
+            soldat_rect.bottom = rect.top + decalage_pieds
+            vitesse_y_soldat = 0
+            peut_sauter = False
 
-    # --- 4. COMBAT LOGIC ---
+        # Collision zombie
+        if zombie_rect.colliderect(rect) and vitesse_y_zombie >= 0:
+            zombie_rect.bottom = rect.top + decalage_pieds
+            vitesse_y_zombie = 0
+
+    # combat
     current_time = pygame.time.get_ticks()
-    if zombie_health > 0:
-        if zombiereference.colliderect(soldatreference):
-            # Zombie bites player
-            if current_time - zombie_last_bite > bite_cooldown:
-                player_health -= 20
-                zombie_last_bite = current_time
-            
-            # Player hits zombie (Check if F is held via keys)
-            if keys[pygame.K_f] and can_damage_zombie:
-                zombie_health -= 15
-                can_damage_zombie = False # Set to False so it only hits once
+    if vie_zombie > 0 and zombie_rect.colliderect(soldat_rect):
+        # Zombie mord le joueur
+        if current_time - dernier_morsure > delai_morsure:
+            vie_joueur -= 20
+            dernier_morsure = current_time
 
-    # Reset attack flag when F is released
+        # Joueur frappe le zombie avec F
+        if keys[pygame.K_f] and peut_frapper_zombie:
+            vie_zombie -= 15
+            peut_frapper_zombie = False
+
     if not keys[pygame.K_f]:
-        can_damage_zombie = True
-    # Dessins
-    pygame.draw.rect(screen,GREEN,rectanglebas)
-    pygame.draw.rect(screen,GREEN,rectanglehaut)
-    pygame.draw.rect(screen,BROWN,rectangleterre1)
-    pygame.draw.rect(screen,BROWN,rectangleterre2)
-    screen.blit(soldat,soldatreference)
-    if zombie_health > 0:
-        screen.blit(zombie,zombiereference)
-    pygame.draw.rect(screen, (0,255,0,), (10, 10, player_health,20))
-    pygame.draw.rect(screen, (255,0,0,), (1050, 10, zombie_health,20))
+        peut_frapper_zombie = True
+
+    # dessin
+    pygame.draw.rect(screen, GREEN, plateforme_bas)
+    pygame.draw.rect(screen, GREEN, plateforme_haut)
+    pygame.draw.rect(screen, BROWN, plateforme_terre_bas)
+    pygame.draw.rect(screen, BROWN, plateforme_terre_haut)
+
+    screen.blit(soldat, soldat_rect)
+    if vie_zombie > 0:
+        screen.blit(zombie, zombie_rect)
+
+    # vie
+    pygame.draw.rect(screen, (0, 255, 0), (10, 10, vie_joueur, 20))
+    pygame.draw.rect(screen, (255, 0, 0), (1050, 10, vie_zombie, 20))
 
     clock.tick(100)
     pygame.display.update()
