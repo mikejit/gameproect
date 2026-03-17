@@ -69,6 +69,12 @@ def show_pause_menu(screen):
         screen.blit(text, text_rect)
 
     pygame.display.update()
+# Combat Stats
+    player_health = 100
+    zombie_health = 50
+    zombie_last_bite = 0  # Timestamp of the last bite
+    bite_cooldown = 1000  # 1000ms = 1 second
+    can_damage_zombie = True # Prevents "machine gun" hits
 
     # Wait for click or ESC to close
     while True:
@@ -96,10 +102,16 @@ while run:
     screen.fill(DarkSlateGray)
     keys = pygame.key.get_pressed()
 
+    
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
+        if event.type == pygame.KEYDOWN:
+            if event.key== pygame.K_ESCAPE:
+                show_pause_menu(screen)
+            
     if keys[pygame.K_RIGHT]:
         soldatreference.x += v_soldat
     if keys[pygame.K_LEFT]:
