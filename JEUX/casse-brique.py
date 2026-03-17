@@ -1,3 +1,4 @@
+
 import pygame, sys, random as rdm, time, math
 from utils import *
 import subprocess
@@ -32,6 +33,13 @@ x_zombie = 810
 y_zombie = 105
 zombiereference = zombie.get_rect(topleft=(x_zombie,y_zombie))
 v_zombie = 2
+
+player_health = 100
+zombie_health = 50
+zombie_last_bite = 0  
+bite_cooldown = 1000  
+can_damage_zombie = True 
+vy_zombie = 0
 
 run = True
 
@@ -69,12 +77,8 @@ def show_pause_menu(screen):
         screen.blit(text, text_rect)
 
     pygame.display.update()
-# Combat Stats
-    player_health = 100
-    zombie_health = 50
-    zombie_last_bite = 0  # Timestamp of the last bite
-    bite_cooldown = 1000  # 1000ms = 1 second
-    can_damage_zombie = True # Prevents "machine gun" hits
+
+    
 
     # Wait for click or ESC to close
     while True:
@@ -112,48 +116,67 @@ while run:
             if event.key== pygame.K_ESCAPE:
                 show_pause_menu(screen)
             
-    if keys[pygame.K_RIGHT]:
-        soldatreference.x += v_soldat
-    if keys[pygame.K_LEFT]:
-        soldatreference.x -= v_soldat
-
-    #saut
-    if keys[pygame.K_SPACE] or keys[pygame.K_UP] and not saut:
+    if keys[pygame.K_UP] and not saut:
         vy = -20
         saut = True
 
-    # G
     vy += g
     soldatreference.y += vy
+    
 
-    # plateforme de bas
-    if 90 <= soldatreference.x <= 540:
-        if soldatreference.y >= 365:
-            soldatreference.y = 365
+    
+    if zombie_health > 0:
+        # Gravity for zombie
+        vy_zombie += g
+        zombiereference.y += vy_zombie
+
+        # Follow player (Horizontal only)
+        if soldatreference.x > zombiereference.x:
+            zombiereference.x += v_zombie
+        else:
+            zombiereference.x -= v_zombie
+
+    # --- 3. PLATFORM COLLISIONS (For both Player and Zombie) ---
+    # Put both in a list to check them easily
+    for rect in [rectanglebas, rectanglehaut]:
+        # Player collision
+        if soldatreference.colliderect(rect) and vy >= 0:
+            soldatreference.bottom = rect.top
             vy = 0
             saut = False
-    #platefforme du haut
-    if 650 <= soldatreference.x <= 1050:
-        if 165 <= soldatreference.y <= 250 and vy >= 0:
-            soldatreference.y = 165
-            vy = 0
-            saut = False
+        
+        # Zombie collision
+        if zombiereference.colliderect(rect) and vy_zombie >= 0:
+            zombiereference.bottom = rect.top
+            vy_zombie = 0
 
-    # zombies automatiques
-    direction_x = soldatreference.x - x_zombie
-    distance = abs(direction_x)
-    if distance != 0:
-        direction_x /= distance
-    x_zombie += direction_x * v_zombie
-    zombiereference.x = x_zombie
+    # --- 4. COMBAT LOGIC ---
+    current_time = pygame.time.get_ticks()
+    if zombie_health > 0:
+        if zombiereference.colliderect(soldatreference):
+            # Zombie bites player
+            if current_time - zombie_last_bite > bite_cooldown:
+                player_health -= 20
+                zombie_last_bite = current_time
+            
+            # Player hits zombie (Check if F is held via keys)
+            if keys[pygame.K_f] and can_damage_zombie:
+                zombie_health -= 15
+                can_damage_zombie = False # Set to False so it only hits once
 
+    # Reset attack flag when F is released
+    if not keys[pygame.K_f]:
+        can_damage_zombie = True
     # Dessins
     pygame.draw.rect(screen,GREEN,rectanglebas)
     pygame.draw.rect(screen,GREEN,rectanglehaut)
     pygame.draw.rect(screen,BROWN,rectangleterre1)
     pygame.draw.rect(screen,BROWN,rectangleterre2)
     screen.blit(soldat,soldatreference)
-    screen.blit(zombie,zombiereference)
+    if zombie_health > 0:
+        screen.blit(zombie,zombiereference)
+    pygame.draw.rect(screen, (0,255,0,), (10, 10, player_health,20))
+    pygame.draw.rect(screen, (255,0,0,), (1050, 10, zombie_health,20))
 
     clock.tick(100)
     pygame.display.update()
