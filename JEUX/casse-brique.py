@@ -105,7 +105,7 @@ while run:
         soldatreference.x -= v_soldat
 
     #saut
-    if keys[pygame.K_SPACE] and not saut:
+    if keys[pygame.K_SPACE] or keys[pygame.K_UP] and not saut:
         vy = -20
         saut = True
 
