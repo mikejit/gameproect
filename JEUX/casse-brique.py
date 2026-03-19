@@ -37,8 +37,8 @@ peut_frapper_zombie = True
 vitesse_y_zombie = 0
 
 # Offset pour que les pieds touchent bien la plateforme
-decalage_pieds = 17
-
+decalage_pieds_soldat = 17
+decalage_pieds_zombie =80
 run = True
 
 
@@ -49,7 +49,7 @@ def show_pause_menu(screen):
     screen.blit(overlay, (0, 0))
 
     # Boîte de pause
-    popup = pygame.Rect(400, 150, 400, 280)
+    popup = pygame.Rect(400, 160, 400, 280)
     pygame.draw.rect(screen, (50, 50, 50), popup)
     pygame.draw.rect(screen, (255, 255, 255), popup, 3)
 
@@ -64,7 +64,7 @@ def show_pause_menu(screen):
     btn_quit = pygame.Rect(450, 380, 300, 50)
 
     mouse = pygame.mouse.get_pos()
-    for btn, label in [(btn_menu, "Main Menu"), (btn_settings, "Settings"), (btn_quit, "Quit")]:
+    for btn, label in [(btn_menu, "Main Menu"), (btn_settings, "Settings"),(btn_quit, "Quit")]:
         color = (100, 100, 100) if btn.collidepoint(mouse) else (70, 70, 70)
         pygame.draw.rect(screen, color, btn)
         pygame.draw.rect(screen, (255, 255, 255), btn, 2)
@@ -122,6 +122,11 @@ while run:
     vitesse_y_soldat += gravite
     soldat_rect.y += vitesse_y_soldat
 
+
+    #si il tombe
+    if soldat_rect.y>700 or vie_joueur==0:
+        run=False
+
     if vie_zombie > 0:
         # Gravité du zombie
         vitesse_y_zombie += gravite
@@ -137,13 +142,13 @@ while run:
     for rect in [plateforme_bas, plateforme_haut]:
         # Collision soldat
         if soldat_rect.colliderect(rect) and vitesse_y_soldat >= 0:
-            soldat_rect.bottom = rect.top + decalage_pieds
+            soldat_rect.bottom = rect.top + decalage_pieds_soldat
             vitesse_y_soldat = 0
             peut_sauter = False
 
         # Collision zombie
         if zombie_rect.colliderect(rect) and vitesse_y_zombie >= 0:
-            zombie_rect.bottom = rect.top + decalage_pieds
+            zombie_rect.bottom = rect.top + decalage_pieds_zombie
             vitesse_y_zombie = 0
 
     # combat
