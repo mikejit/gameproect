@@ -23,7 +23,7 @@ vitesse_soldat = 5
 vitesse_y_soldat = 0
 gravite = 0.8
 peut_sauter = False
-#MINI
+
 # zombie
 zombies = []
 if vie_zombie==0:
@@ -40,7 +40,7 @@ dernier_morsure = 0
 delai_morsure = 1000
 peut_frapper_zombie = True
 vitesse_y_zombie = 0
-#/MINI
+
 # Offset pour que les pieds touchent bien la plateforme
 decalage_pieds_soldat = 17
 decalage_pieds_zombie =80
@@ -101,7 +101,7 @@ def show_pause_menu(screen):
                     pygame.quit()
                     sys.exit()
 
-#MINI
+
 while run:
     screen.fill(DarkSlateGray)
     keys = pygame.key.get_pressed()
@@ -112,7 +112,7 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 show_pause_menu(screen)
-#/MINI
+
     # Mouvement horizontal du soldat
     if keys[pygame.K_LEFT]:
         soldat_rect.x -= vitesse_soldat
@@ -171,21 +171,21 @@ while run:
 
     if not keys[pygame.K_f]:
         peut_frapper_zombie = True
-#MINI
+
     # dessin
     pygame.draw.rect(screen, GREEN, plateforme_bas)
     pygame.draw.rect(screen, GREEN, plateforme_haut)
     pygame.draw.rect(screen, BROWN, plateforme_terre_bas)
     pygame.draw.rect(screen, BROWN, plateforme_terre_haut)
-#/MINI
+
     screen.blit(soldat, soldat_rect)
     if vie_zombie > 0:
         screen.blit(zombie, zombie_rect)
-#MINI
+
     # vie
     pygame.draw.rect(screen, (0, 255, 0), (10, 10, vie_joueur, 20))
     pygame.draw.rect(screen, (255, 0, 0), (1050, 10, vie_zombie, 20))
-#/MINI et KIKO
+
     clock.tick(100)
     pygame.display.update()
 
