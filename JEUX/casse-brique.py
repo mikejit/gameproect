@@ -143,6 +143,13 @@ while run:
         else:
             zombie_rect.x -= vitesse_zombie
 
+#mudanças 
+    
+    if vie_zombie<=0:
+        pygame.quit()
+        subprocess.run([sys.executable, "levels-menu.py"])
+        sys.exit()
+#mudanças acaba
     # contact avec les platformes
     for rect in [plateforme_bas, plateforme_haut]:
         # Collision soldat
