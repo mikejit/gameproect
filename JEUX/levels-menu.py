@@ -36,7 +36,7 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             click = True
 
-    # ── MENU PAGE ─────────────────────────────────────────────────
+
     if page == "level":
         draw_title("MAIN MENU")
         b_play     = draw_button("Next Level",     200)
@@ -53,7 +53,6 @@ while True:
             if b_quit.collidepoint(mouse):
                 pygame.quit(); sys.exit()
 
-    # ── PLAY PAGE ─────────────────────────────────────────────────
     elif page == "play":
         draw_title("PLAY")
         msg = small_font.render("Game goes here!", True, WHITE)
@@ -62,7 +61,7 @@ while True:
         if click and b_back.collidepoint(mouse): page = "menu"
 
 
-    # ── SETTINGS PAGE ─────────────────────────────────────────────
+    
     elif page == "settings":
         draw_title("SETTINGS")
         msg = small_font.render("Settings go here!", True, WHITE)
