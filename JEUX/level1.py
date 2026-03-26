@@ -8,6 +8,22 @@ screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
 clock = pygame.time.Clock()
 
+#son
+#sons
+pygame.init()
+pygame.mixer.init()
+
+sonjeu=pygame.mixer.Sound("sonjeu.mp3")
+sonngameover = pygame.mixer.Sound("soundgameover.mp3")
+sonepee = pygame.mixer.Sound("sonepee.mp3")
+sonepee2=pygame.mixer.Sound("sonepee2.mp3")
+
+
+sonsepee = [son1, son2]
+
+# Jouer un son aléatoire
+random.choice(sons).play()
+
 # platformes
 plateforme_bas = pygame.Rect(90, 450, 450, 20)
 plateforme_terre_bas = pygame.Rect(90, 460, 450, 50)
