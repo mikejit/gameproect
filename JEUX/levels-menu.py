@@ -46,10 +46,10 @@ while True:
         if click:
             if b_play.collidepoint(mouse):     
                 pygame.quit()
-                subprocess.run([sys.executable, "casse-brique.py"])
+                subprocess.run([sys.executable, "level1.py"])
                 sys.exit()
-            if b_options.collidepoint(mouse):  page = "options"
-            if b_settings.collidepoint(mouse): page = "settings"
+            if b_options.collidepoint(mouse):  page = "settings"
+            if b_settings.collidepoint(mouse): page = "main menu"
             if b_quit.collidepoint(mouse):
                 pygame.quit(); sys.exit()
 
