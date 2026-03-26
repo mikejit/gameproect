@@ -1,7 +1,7 @@
 import pygame, sys, random as rdm, time, math
 from utils import *
 import subprocess
-#MINI
+
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
@@ -17,20 +17,17 @@ plateforme_terre_haut = pygame.Rect(650, 260, 400, 50)
 soldat = pygame.image.load("soldat.png").convert_alpha()
 soldat_rect = soldat.get_rect(topleft=(175, 365))
 vitesse_soldat = 5
-#/MINI
+
 
 #var saut
 vitesse_y_soldat = 0
 gravite = 0.8
 peut_sauter = False
 
-# zombie
-zombies = []
-if vie_zombie==0:
-    for i in range(3): 
-        zombie = pygame.image.load("zombie.png").convert_alpha()
-        zombie_rect = zombie.get_rect(topleft=(810, 105))
-        vitesse_zombie = 2
+# zombie 
+zombie = pygame.image.load("zombie.png").convert_alpha()
+zombie_rect = zombie.get_rect(topleft=(810, 105))
+vitesse_zombie = 2
         
 
 # vie combat
