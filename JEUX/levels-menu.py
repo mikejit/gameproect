@@ -38,7 +38,7 @@ while True:
 
 
     if page == "level":
-        draw_title("MAIN MENU")
+        draw_title("LEVEL COMPLETE")
         b_play     = draw_button("Next Level",     200)
         b_settings = draw_button("SETTINGS", 360)
         b_quit     = draw_button("QUIT",     440)
