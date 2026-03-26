@@ -3,7 +3,7 @@ import subprocess
 
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
-pygame.display.set_caption("Game")
+pygame.display.set_caption("Level 2")
 font = pygame.font.SysFont("arial", 50, bold=True)
 small_font = pygame.font.SysFont("arial", 35)
 
@@ -11,7 +11,7 @@ BG      = (34, 34, 85)   # dark blue background
 WHITE   = (255, 255, 255)
 YELLOW  = (255, 220, 50)
 
-page = "menu"  # tracks which page we're on
+page = "level"  # tracks which page we're on
 
 def draw_button(text, y):
     """Draw a button and return its rect."""
@@ -37,10 +37,9 @@ while True:
             click = True
 
     # ── MENU PAGE ─────────────────────────────────────────────────
-    if page == "menu":
+    if page == "level":
         draw_title("MAIN MENU")
-        b_play     = draw_button("PLAY",     200)
-        b_options  = draw_button("OPTIONS",  280)
+        b_play     = draw_button("Next Level",     200)
         b_settings = draw_button("SETTINGS", 360)
         b_quit     = draw_button("QUIT",     440)
 
@@ -62,13 +61,6 @@ while True:
         b_back = draw_button("BACK", 450)
         if click and b_back.collidepoint(mouse): page = "menu"
 
-    # ── OPTIONS PAGE ──────────────────────────────────────────────
-    elif page == "options":
-        draw_title("OPTIONS")
-        msg = small_font.render("Options go here!", True, WHITE)
-        screen.blit(msg, msg.get_rect(center=(400, 300)))
-        b_back = draw_button("BACK", 450)
-        if click and b_back.collidepoint(mouse): page = "menu"
 
     # ── SETTINGS PAGE ─────────────────────────────────────────────
     elif page == "settings":
