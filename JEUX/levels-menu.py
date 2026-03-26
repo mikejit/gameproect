@@ -7,11 +7,11 @@ pygame.display.set_caption("Level 2")
 font = pygame.font.SysFont("arial", 50, bold=True)
 small_font = pygame.font.SysFont("arial", 35)
 
-BG      = (34, 34, 85)   # dark blue background
+BG      = (34, 34, 85)  
 WHITE   = (255, 255, 255)
 YELLOW  = (255, 220, 50)
 
-page = "level"  # tracks which page we're on
+page = "level"  
 
 def draw_button(text, y):
     """Draw a button and return its rect."""
