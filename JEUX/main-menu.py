@@ -2,6 +2,13 @@ import pygame, sys
 import subprocess 
 
 pygame.init()
+pygame.mixer.init()
+
+theme_song = pygame.mixer.Sound("freesound_community-medieval-music-by-sjal-hunehals-borg-18936.mp3")
+pygame.mixer.music.load("freesound_community-medieval-music-by-sjal-hunehals-borg-18936.mp3")
+pygame.mixer.music.play(-1)
+
+
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("Game")
 font = pygame.font.SysFont("arial", 50, bold=True)
