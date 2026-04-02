@@ -19,7 +19,6 @@ sonepee = pygame.mixer.Sound("sonepee.mp3")
 sonepee2=pygame.mixer.Sound("sonepee2.mp3")
 sonzombie=pygame.mixer.Sound("bitezombie.mp3")
 sonvictoire=pygame.mixer.Sound("youwin.mp3")
-
 sonsepee = [sonepee, sonepee2]
 
 
@@ -218,7 +217,7 @@ while run:
 
     if not keys[pygame.K_f]:
         peut_frapper_zombie = True
-        random.choice(sonsepee).play()
+        rdm.choice(sonsepee).play()
 
     # dessin
     pygame.draw.rect(screen, GREEN, plateforme_bas)
