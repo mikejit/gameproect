@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
 clock = pygame.time.Clock()
 
-#son
+
 #sons
 pygame.init()
 pygame.mixer.init()
@@ -17,7 +17,8 @@ sonjeu=pygame.mixer.Sound("sonjeu.mp3")
 sonngameover = pygame.mixer.Sound("soundgameover.mp3")
 sonepee = pygame.mixer.Sound("sonepee.mp3")
 sonepee2=pygame.mixer.Sound("sonepee2.mp3")
-
+sonzombie=pygame.mixer.Sound("bitezombie.mp3")
+sonvictoire=pygame.mixer.Sound("youwin.mp3")
 
 sonsepee = [son1, son2]
 
@@ -211,6 +212,8 @@ while run:
 
             # Joueur frappe le zombie avec F
             if keys[pygame.K_f] and peut_frapper_zombie:
+                sonsepee = [son1, son2]
+                random.choice(sons).play()
                 z["health"] -= 15
                 peut_frapper_zombie = False
 
