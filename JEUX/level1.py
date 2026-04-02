@@ -20,7 +20,7 @@ sonepee2=pygame.mixer.Sound("sonepee2.mp3")
 sonzombie=pygame.mixer.Sound("bitezombie.mp3")
 sonvictoire=pygame.mixer.Sound("youwin.mp3")
 
-sonsepee = [son1, son2]
+sonsepee = [sonepee, sonepee2]
 
 # Jouer un son aléatoire
 random.choice(sons).play()
@@ -212,8 +212,7 @@ while run:
 
             # Joueur frappe le zombie avec F
             if keys[pygame.K_f] and peut_frapper_zombie:
-                sonsepee = [son1, son2]
-                random.choice(sons).play()
+                random.choice(sonsepee).play()
                 z["health"] -= 15
                 peut_frapper_zombie = False
 
