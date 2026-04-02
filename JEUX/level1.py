@@ -22,8 +22,8 @@ sonvictoire=pygame.mixer.Sound("youwin.mp3")
 
 sonsepee = [sonepee, sonepee2]
 
-# Jouer un son aléatoire
-random.choice(sons).play()
+
+
 
 # platformes
 plateforme_bas = pygame.Rect(90, 450, 450, 20)
@@ -218,6 +218,7 @@ while run:
 
     if not keys[pygame.K_f]:
         peut_frapper_zombie = True
+        random.choice(sonsepee).play()
 
     # dessin
     pygame.draw.rect(screen, GREEN, plateforme_bas)
