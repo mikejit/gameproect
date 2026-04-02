@@ -138,6 +138,7 @@ def show_pause_menu(screen):
 
 
 while run:
+    sonjeu.play()
     screen.fill(DarkSlateGray)
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -164,6 +165,7 @@ while run:
     # si il tombe
     if soldat_rect.y > 700 or vie_joueur == 0:
         run = False
+        sonngameover.play()
 
     # zombie update
     for z in zombies:
@@ -182,6 +184,7 @@ while run:
 
     if all(z["health"] <= 0 for z in zombies):
         niv += 1
+        sonvictoire.play()
         zombies = ajout_zomb(niv)
         vie_joueur = 100
 
@@ -206,6 +209,7 @@ while run:
         if z["health"] > 0 and z["rect"].colliderect(soldat_rect):
             # Zombie mord le joueur
             if current_time - dernier_morsure > delai_morsure:
+                sonzombie.play()
                 vie_joueur -= 20
                 dernier_morsure = current_time
 
