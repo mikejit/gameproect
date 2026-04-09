@@ -2,6 +2,7 @@ import pygame, sys, random as rdm, time, math
 from utils import *
 import subprocess
 
+# MINI
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
@@ -12,15 +13,6 @@ clock = pygame.time.Clock()
 pygame.init()
 pygame.mixer.init()
 
-sonjeu=pygame.mixer.Sound("sonjeu.mp3")
-sonngameover = pygame.mixer.Sound("soundgameover.mp3")
-sonepee = pygame.mixer.Sound("sonepee.mp3")
-sonepee2=pygame.mixer.Sound("sonepee2.mp3")
-sonzombie=pygame.mixer.Sound("bitezombie.mp3")
-sonvictoire=pygame.mixer.Sound("youwin.mp3")
-#creation d'une liste entre deux sons differents d'epee
-sonsepee = [sonepee, sonepee2]
-
 
 
 
@@ -30,15 +22,13 @@ plateforme_terre_bas = pygame.Rect(90, 460, 450, 50)
 plateforme_haut = pygame.Rect(650, 250, 400, 20)
 plateforme_terre_haut = pygame.Rect(650, 260, 400, 50)
 
-# Chargement et affichage de l'image du zombie
-zombie = pygame.image.load("zombie.png").convert_alpha()
 
+zombie = pygame.image.load("JEUX/zombie.png").convert_alpha()
 # soldat
-soldat = pygame.image.load("soldat.png").convert_alpha()
-    ## rectangle attaché au soldat qui le permet de bouger
+soldat = pygame.image.load("JEUX/soldat.png").convert_alpha()
 soldat_rect = soldat.get_rect(topleft=(175, 365))
 vitesse_soldat = 5
-
+# /MINI
 
 # var saut
 vitesse_y_soldat = 0
@@ -55,7 +45,7 @@ diff_zmb=[
     (2,250)
 ]
 zombies=[]
-niv=1  # commence avec un zombie au niveau 1
+niv=1  # start at 1 so at least 1 zombie
 
 def ajout_zomb(niv):
     nouv_zomb=[]
@@ -140,7 +130,6 @@ def show_pause_menu(screen):
 
 
 while run:
-    sonjeu.play()
     screen.fill(DarkSlateGray)
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -166,8 +155,12 @@ while run:
 
     # si il tombe
     if soldat_rect.y > 700 or vie_joueur == 0:
-        run = False
-        sonngameover.play()
+        pygame.quit()
+        subprocess.run([sys.executable, "JEUX/game-over.py"])
+        sys.exit()
+
+        
+        
 
     # zombie update
     for z in zombies:
@@ -182,15 +175,15 @@ while run:
             else:
                 z["rect"].x -= z["speed"]
 
-    # changements
+    # mudanças
 
     if all(z["health"] <= 0 for z in zombies):
         niv += 1
-        sonvictoire.play()
+        
         zombies = ajout_zomb(niv)
         vie_joueur = 100
 
-    # fin changements
+    # mudanças acaba
     # contact avec les platformes
     for rect in [plateforme_bas, plateforme_haut]:
         # Collision soldat
@@ -211,19 +204,19 @@ while run:
         if z["health"] > 0 and z["rect"].colliderect(soldat_rect):
             # Zombie mord le joueur
             if current_time - dernier_morsure > delai_morsure:
-                sonzombie.play()
+    
                 vie_joueur -= 20
                 dernier_morsure = current_time
 
             # Joueur frappe le zombie avec F
             if keys[pygame.K_f] and peut_frapper_zombie:
-                rdm.choice(sonsepee).play()
+                
                 z["health"] -= 15
                 peut_frapper_zombie = False
 
     if not keys[pygame.K_f]:
         peut_frapper_zombie = True
-        rdm.choice(sonsepee).play()
+        
 
     # dessin
     pygame.draw.rect(screen, GREEN, plateforme_bas)
@@ -269,4 +262,3 @@ while run:
     clock.tick(100)
     pygame.display.update()
 
-pygame.quit()
