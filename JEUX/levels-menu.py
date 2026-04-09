@@ -16,7 +16,7 @@ page = "level"
 def draw_button(text, y):
     """Draw a button and return its rect."""
     label = small_font.render(text, True, BG)
-    rect  = pygame.Rect(300, y, 540, 50)
+    rect  = pygame.Rect(300, y, 540, 70)
     pygame.draw.rect(screen, WHITE, rect, border_radius=8)
     screen.blit(label, label.get_rect(center=rect.center))
     return rect
@@ -39,17 +39,21 @@ while True:
 
     if page == "level":
         draw_title("LEVEL COMPLETE")
-        b_play     = draw_button("Next Level",     200)
-        b_settings = draw_button("SETTINGS", 360)
-        b_quit     = draw_button("QUIT",     440)
+        b_play     = draw_button("Next Level",     220)
+        b_mainmenu = draw_button("MAIN MENU", 320)
+        b_quit     = draw_button("QUIT",     420)
 
         if click:
             if b_play.collidepoint(mouse):     
                 pygame.quit()
-                subprocess.run([sys.executable, "level1.py"])
+                subprocess.run([sys.executable, "JEUX/level2.py"])
                 sys.exit()
-            if b_options.collidepoint(mouse):  page = "settings"
-            if b_settings.collidepoint(mouse): page = "main menu"
+            
+            if b_mainmenu.collidepoint(mouse): 
+                pygame.quit()
+                subprocess.run([sys.executable, "JEUX/main-menu.py"])
+                sys.exit()
+
             if b_quit.collidepoint(mouse):
                 pygame.quit(); sys.exit()
 
