@@ -4,10 +4,6 @@ import subprocess
 pygame.init()
 pygame.mixer.init()
 
-theme_song = pygame.mixer.Sound("freesound_community-medieval-music-by-sjal-hunehals-borg-18936.mp3")
-pygame.mixer.music.load("freesound_community-medieval-music-by-sjal-hunehals-borg-18936.mp3")
-pygame.mixer.music.play(-1)
-
 
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("Game")
@@ -54,12 +50,13 @@ while True:
         if click:
             if b_play.collidepoint(mouse):     
                 pygame.quit()
-                subprocess.run([sys.executable, "casse-brique.py"])
+                subprocess.run([sys.executable, "JEUX/level1.py"])
                 sys.exit()
             if b_options.collidepoint(mouse):  page = "options"
             if b_settings.collidepoint(mouse): page = "settings"
             if b_quit.collidepoint(mouse):
-                pygame.quit(); sys.exit()
+                pygame.quit(); 
+                sys.exit()
 
     # ── PLAY PAGE ─────────────────────────────────────────────────
     elif page == "play":
