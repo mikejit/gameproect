@@ -2,6 +2,7 @@ import pygame, sys, random as rdm, time, math
 from utils import *
 import subprocess
 
+
 # MINI
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
@@ -58,6 +59,7 @@ def ajout_zomb(niv):
             "health":vie,
             "vy":0
         })
+
     return nouv_zomb
 
 zombies=ajout_zomb(niv)
@@ -159,7 +161,7 @@ while run:
         subprocess.run([sys.executable, "JEUX/game-over.py"])
         sys.exit()
 
-        
+    
         
 
     # zombie update
@@ -179,6 +181,7 @@ while run:
 
     if all(z["health"] <= 0 for z in zombies):
         niv += 1
+
         
         zombies = ajout_zomb(niv)
         vie_joueur = 100
@@ -223,7 +226,6 @@ while run:
     pygame.draw.rect(screen, GREEN, plateforme_haut)
     pygame.draw.rect(screen, BROWN, plateforme_terre_bas)
     pygame.draw.rect(screen, BROWN, plateforme_terre_haut)
-    pygame.draw.rect(screen, (255, 0, 0), (1050, 10, z["health"], 20))
 
     screen.blit(soldat, soldat_rect)
 
