@@ -2,7 +2,6 @@ import pygame, sys, random as rdm, time, math
 from utils import *
 import subprocess
 
-
 # MINI
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
@@ -11,11 +10,19 @@ clock = pygame.time.Clock()
 
 
 #sons
+pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 pygame.mixer.init()
 
-
-
+# Use music.load for the background MP3 to fix the "4 bytes" error
+pygame.mixer.music.load("/home/thomas/Desktop/gameproect/JEUX/sonjeu.mp3")
+pygame.mixer.music.play(-1) # Plays on loop
+sonzombie=pygame.mixer.Sound("/home/thomas/Desktop/gameproect/JEUX/bitezombie.mp3")
+sonngameover=pygame.mixer.Sound("/home/thomas/Desktop/gameproect/JEUX/gameover.mp3")
+sonepee=pygame.mixer.Sound("/home/thomas/Desktop/gameproect/JEUX/sonepee.mp3")
+sonepee2=pygame.mixer.Sound("/home/thomas/Desktop/gameproect/JEUX/sonepee2.mp3")
+sonvictoire=pygame.mixer.Sound("/home/thomas/Desktop/gameproect/JEUX/youwin.mp3")
+sonsepee=[sonepee,sonepee2]
 
 # platformes
 plateforme_bas = pygame.Rect(90, 450, 450, 20)
@@ -24,9 +31,9 @@ plateforme_haut = pygame.Rect(650, 250, 400, 20)
 plateforme_terre_haut = pygame.Rect(650, 260, 400, 50)
 
 
-zombie = pygame.image.load("JEUX/zombie.png").convert_alpha()
+zombie = pygame.image.load("/home/thomas/Desktop/gameproect/JEUX/zombie.png").convert_alpha()
 # soldat
-soldat = pygame.image.load("JEUX/soldat.png").convert_alpha()
+soldat = pygame.image.load("/home/thomas/Desktop/gameproect/JEUX/soldat.png").convert_alpha()
 soldat_rect = soldat.get_rect(topleft=(175, 365))
 vitesse_soldat = 5
 # /MINI
@@ -59,7 +66,6 @@ def ajout_zomb(niv):
             "health":vie,
             "vy":0
         })
-
     return nouv_zomb
 
 zombies=ajout_zomb(niv)
@@ -132,6 +138,7 @@ def show_pause_menu(screen):
 
 
 while run:
+    # sonjeu.play() removed from here (it is handled by mixer.music.play above)
     screen.fill(DarkSlateGray)
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -156,13 +163,10 @@ while run:
     soldat_rect.y += vitesse_y_soldat
 
     # si il tombe
-    if soldat_rect.y > 700 or vie_joueur == 0:
-        pygame.quit()
-        subprocess.run([sys.executable, "JEUX/game-over.py"])
-        sys.exit()
-
-    
-        
+    if soldat_rect.y > 700 or vie_joueur <= 0:
+        run = False
+        pygame.mixer.music.stop()
+        sonngameover.play()
 
     # zombie update
     for z in zombies:
@@ -181,8 +185,7 @@ while run:
 
     if all(z["health"] <= 0 for z in zombies):
         niv += 1
-
-        
+        sonvictoire.play()
         zombies = ajout_zomb(niv)
         vie_joueur = 100
 
@@ -207,19 +210,18 @@ while run:
         if z["health"] > 0 and z["rect"].colliderect(soldat_rect):
             # Zombie mord le joueur
             if current_time - dernier_morsure > delai_morsure:
-    
+                sonzombie.play()
                 vie_joueur -= 20
                 dernier_morsure = current_time
 
             # Joueur frappe le zombie avec F
             if keys[pygame.K_f] and peut_frapper_zombie:
-                
+                rdm.choice(sonsepee).play()
                 z["health"] -= 15
                 peut_frapper_zombie = False
 
     if not keys[pygame.K_f]:
         peut_frapper_zombie = True
-        
 
     # dessin
     pygame.draw.rect(screen, GREEN, plateforme_bas)
@@ -264,3 +266,4 @@ while run:
     clock.tick(100)
     pygame.display.update()
 
+pygame.quit()
