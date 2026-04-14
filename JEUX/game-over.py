@@ -9,11 +9,11 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Death Screen Preview")
 clock = pygame.time.Clock()
 
-# --- SETTINGS ---
+
 page = "game-over"
 death_cause = "zombie" # Default cause for preview
 
-# --- COLORS & FONTS ---
+
 BG        = (34, 34, 85) 
 WHITE     = (255, 255, 255)
 RED       = (200, 40, 40)
@@ -63,13 +63,13 @@ def draw_game_over(cause):
     
     return retry_rect, quit_rect
 
-# --- SINGLE MAIN LOOP ---
+
 while True:
     screen.fill(BG)
     mouse = pygame.mouse.get_pos()
     click = False
 
-    # 1. EVENT HANDLING
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -79,12 +79,12 @@ while True:
             if event.button == 1: # Left click
                 click = True
         
-        # Keys to test different death looks
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z: death_cause = "zombie"
             if event.key == pygame.K_f: death_cause = "fall"
 
-    # 2. DRAWING & LOGIC
+    
     if page == "game-over":
         draw_title("GAME OVER")
         b_retry, b_quit = draw_game_over(death_cause) 
