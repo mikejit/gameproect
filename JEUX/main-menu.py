@@ -3,7 +3,8 @@ import subprocess
 
 pygame.init()
 pygame.mixer.init()
-
+pygame.mixer.music.load("JEUX/entry.mp3")
+pygame.mixer.music.play(-1)
 
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("Game")
@@ -58,7 +59,7 @@ while True:
                 pygame.quit(); 
                 sys.exit()
 
-   
+    
     elif page == "play":
         draw_title("PLAY")
         msg = small_font.render("Game goes here!", True, WHITE)
@@ -67,13 +68,14 @@ while True:
         if click and b_back.collidepoint(mouse): page = "menu"
 
    
+    elif page == "options":
         draw_title("OPTIONS")
         msg = small_font.render("Options go here!", True, WHITE)
         screen.blit(msg, msg.get_rect(center=(400, 300)))
         b_back = draw_button("BACK", 450)
         if click and b_back.collidepoint(mouse): page = "menu"
 
-    
+  
     elif page == "settings":
         draw_title("SETTINGS")
         msg = small_font.render("Settings go here!", True, WHITE)
