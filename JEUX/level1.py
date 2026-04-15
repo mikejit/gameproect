@@ -36,7 +36,10 @@ zombie = pygame.image.load("JEUX/zombie.png").convert_alpha()
 soldat = pygame.image.load("JEUX/soldat.png").convert_alpha()
 soldat_rect = soldat.get_rect(topleft=(175, 365))
 vitesse_soldat = 5
-# /MINI
+
+compteur_nb = pygame.font.SysFont("Arial", 30, bold="True")
+
+
 
 # var saut
 vitesse_y_soldat = 0
@@ -140,6 +143,7 @@ def show_pause_menu(screen):
 
 while run:
     screen.fill(DarkSlateGray)
+    compteur_txt = compteur_nb.render(f" {niv}", True, (255,255,255))
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -188,7 +192,7 @@ while run:
 
     if all(z["health"] <= 0 for z in zombies):
         niv += 1
-
+        compteur = niv
         
         zombies = ajout_zomb(niv)
         vie_joueur = 100
@@ -267,6 +271,7 @@ while run:
 
     # vie
     pygame.draw.rect(screen, (0, 255, 0), (10, 10, vie_joueur, 20))
+    screen.blit(compteur_txt, (1000, 20))
 
     clock.tick(100)
     pygame.display.update()
