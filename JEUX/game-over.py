@@ -3,6 +3,9 @@ import sys
 import subprocess
 
 pygame.init()
+pygame.mixer.init()
+songameover=pygame.mixer.Sound("JEUX/lose.mp3")
+songameover.play()
 
 WIDTH, HEIGHT = 1200, 580
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -11,7 +14,7 @@ clock = pygame.time.Clock()
 
 
 page = "game-over"
-death_cause = "zombie" # Default cause for preview
+death_cause = "zombie" 
 
 
 BG        = (34, 34, 85) 
@@ -30,26 +33,26 @@ def draw_title(text):
     screen.blit(t, t.get_rect(center=(WIDTH // 2, 80)))
 
 def draw_game_over(cause):
-    # Darken background
+    
     overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 180)) 
     screen.blit(overlay, (0, 0))
 
-    # Panel
+    
     panel = pygame.Rect(400, 150, 400, 250)
     pygame.draw.rect(screen, DARK_GRAY, panel, border_radius=15)
     pygame.draw.rect(screen, RED, panel, 5, border_radius=15)
 
-    # Title
+    
     title = font_big.render("YOU DIED", True, RED)
     screen.blit(title, title.get_rect(center=(WIDTH // 2, 220)))
 
-    # Detail Text
+   
     msg = "Caught by a zombie!" if cause == "zombie" else "You fell off the world!"
     sub = font_small.render(msg, True, WHITE)
     screen.blit(sub, sub.get_rect(center=(WIDTH // 2, 280)))
 
-    # Buttons
+    
     retry_rect = pygame.Rect(430, 320, 140, 45)
     quit_rect  = pygame.Rect(630, 320, 140, 45)
     
@@ -76,7 +79,7 @@ while True:
             sys.exit()
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1: # Left click
+            if event.button == 1: 
                 click = True
         
         
@@ -91,10 +94,7 @@ while True:
 
         if click:
             if b_retry.collidepoint(mouse):
-                print("Reloading Level 1...")
                 pygame.quit()
-                # Use "level1.py" if this file is ALREADY in the JEUX folder
-                # Use "JEUX/level1.py" if this file is in the folder ABOVE JEUX
                 subprocess.run([sys.executable, "JEUX/level1.py"])
                 sys.exit()
 
