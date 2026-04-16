@@ -1,106 +1,79 @@
-import pygame
-import sys
-import subprocess
+import pygame, sys
+import subprocess 
 
 pygame.init()
 pygame.mixer.init()
-songameover=pygame.mixer.Sound("JEUX/lose.mp3")
-songameover.play()
+pygame.mixer.music.load("JEUX/entry.mp3")
+pygame.mixer.music.play(-1)
 
-WIDTH, HEIGHT = 1200, 580
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Death Screen Preview")
-clock = pygame.time.Clock()
+screen = pygame.display.set_mode((1200, 580))
+pygame.display.set_caption("Game")
+font = pygame.font.SysFont("arial", 50, bold=True)
+small_font = pygame.font.SysFont("arial", 35)
 
+BG      = (34, 34, 85)   
+WHITE   = (255, 255, 255)
+YELLOW  = (255, 220, 50)
 
-page = "game-over"
-death_cause = "zombie" 
+page = "menu"  
 
-
-BG        = (34, 34, 85) 
-WHITE     = (255, 255, 255)
-RED       = (200, 40, 40)
-GREEN     = (50, 180, 50)
-DARK_GRAY = (40, 40, 40)
-YELLOW    = (255, 220, 50)
-
-font       = pygame.font.SysFont("arial", 50, bold=True)
-font_big   = pygame.font.SysFont("arial", 64, bold=True)
-font_small = pygame.font.SysFont("arial", 26)
+def draw_button(text, y):
+    """Draw a button and return its rect."""
+    label = small_font.render(text, True, BG)
+    rect  = pygame.Rect(300, y, 540, 70)
+    pygame.draw.rect(screen, WHITE, rect, border_radius=8)
+    screen.blit(label, label.get_rect(center=rect.center))
+    return rect
 
 def draw_title(text):
     t = font.render(text, True, YELLOW)
-    screen.blit(t, t.get_rect(center=(WIDTH // 2, 80)))
-
-def draw_game_over(cause):
-    
-    overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
-    overlay.fill((0, 0, 0, 180)) 
-    screen.blit(overlay, (0, 0))
-
-    
-    panel = pygame.Rect(400, 150, 400, 250)
-    pygame.draw.rect(screen, DARK_GRAY, panel, border_radius=15)
-    pygame.draw.rect(screen, RED, panel, 5, border_radius=15)
-
-    
-    title = font_big.render("YOU DIED", True, RED)
-    screen.blit(title, title.get_rect(center=(WIDTH // 2, 220)))
-
-   
-    msg = "Caught by a zombie!" if cause == "zombie" else "You fell off the world!"
-    sub = font_small.render(msg, True, WHITE)
-    screen.blit(sub, sub.get_rect(center=(WIDTH // 2, 280)))
-
-    
-    retry_rect = pygame.Rect(430, 320, 140, 45)
-    quit_rect  = pygame.Rect(630, 320, 140, 45)
-    
-    pygame.draw.rect(screen, GREEN, retry_rect, border_radius=8)
-    pygame.draw.rect(screen, RED, quit_rect, border_radius=8)
-
-    retry_txt = font_small.render("RETRY", True, WHITE)
-    quit_txt  = font_small.render("QUIT", True, WHITE)
-    screen.blit(retry_txt, retry_txt.get_rect(center=retry_rect.center))
-    screen.blit(quit_txt, quit_txt.get_rect(center=quit_rect.center))
-    
-    return retry_rect, quit_rect
-
+    screen.blit(t, t.get_rect(center=(570, 80)))
 
 while True:
     screen.fill(BG)
     mouse = pygame.mouse.get_pos()
     click = False
 
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        
+            pygame.quit(); sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1: 
-                click = True
-        
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z: death_cause = "zombie"
-            if event.key == pygame.K_f: death_cause = "fall"
+            click = True
 
     
-    if page == "game-over":
-        draw_title("GAME OVER")
-        b_retry, b_quit = draw_game_over(death_cause) 
+    if page == "menu":
+        draw_title("MAIN MENU")
+        b_play     = draw_button("PLAY",     180)
+        b_credits = draw_button("CREDITS", 270)
+        b_quit     = draw_button("QUIT",     360)
 
         if click:
-            if b_retry.collidepoint(mouse):
+            if b_play.collidepoint(mouse):     
                 pygame.quit()
                 subprocess.run([sys.executable, "JEUX/level1.py"])
                 sys.exit()
-
+            if b_credits.collidepoint(mouse): page = "credits"
             if b_quit.collidepoint(mouse):
-                pygame.quit()
+                pygame.quit(); 
                 sys.exit()
 
+    
+    elif page == "play":
+        draw_title("PLAY")
+        msg = small_font.render("Game goes here!", True, WHITE)
+        screen.blit(msg, msg.get_rect(center=(400, 300)))
+        b_back = draw_button("BACK", 450)
+        if click and b_back.collidepoint(mouse): page = "menu"
+
+
+   
+    elif page == "credits":
+        draw_title("GAME DEVELOPED BY:")
+        msg = small_font.render("Thomas Duarte Jacinto, " \
+        "Francisco Gomes", \
+        "Miguel Basto", True, WHITE)
+        screen.blit(msg, msg.get_rect(center=(400, 300)))
+        b_back = draw_button("BACK", 450)
+        if click and b_back.collidepoint(mouse): page = "menu"
+    
     pygame.display.update()
-    clock.tick(60)
