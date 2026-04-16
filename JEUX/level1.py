@@ -3,7 +3,7 @@ from utils import *
 import subprocess
 
 
-
+# MINI
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
@@ -56,8 +56,7 @@ diff_zmb=[
     (2,250)
 ]
 zombies=[]
-niv=1  # start at 1 so at least 1 zombie
-
+niv=1  
 def ajout_zomb(niv):
     nouv_zomb=[]
     for i in range(niv):
@@ -104,11 +103,11 @@ def show_pause_menu(screen):
     screen.blit(title, (550, 170))
 
     btn_menu = pygame.Rect(450, 240, 300, 50)
-    btn_settings = pygame.Rect(450, 310, 300, 50)
+    btn_credits = pygame.Rect(450, 310, 300, 50)
     btn_quit = pygame.Rect(450, 380, 300, 50)
 
     mouse = pygame.mouse.get_pos()
-    for btn, label in [(btn_menu, "Main Menu"), (btn_settings, "Settings"), (btn_quit, "Quit")]:
+    for btn, label in [(btn_menu, "Main Menu"), (btn_credits, "Credits"), (btn_quit, "Quit")]:
         color = (100, 100, 100) if btn.collidepoint(mouse) else (70, 70, 70)
         pygame.draw.rect(screen, color, btn)
         pygame.draw.rect(screen, (255, 255, 255), btn, 2)
@@ -130,11 +129,11 @@ def show_pause_menu(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if btn_menu.collidepoint(event.pos):
                     pygame.quit()
-                    subprocess.run([sys.executable, "main-menu.py"])
+                    subprocess.run([sys.executable, "JEUX/main-menu.py"])
                     sys.exit()
-                if btn_settings.collidepoint(event.pos):
+                if btn_credits.collidepoint(event.pos):
                     pygame.quit()
-                    subprocess.run([sys.executable, "main-menu.py", "--settings"])
+                    subprocess.run([sys.executable, "JEUX/main-menu.py", "credits"])
                     sys.exit()
                 if btn_quit.collidepoint(event.pos):
                     pygame.quit()
@@ -143,7 +142,7 @@ def show_pause_menu(screen):
 
 while run:
     screen.fill(DarkSlateGray)
-    compteur_txt = compteur_nb.render(f" {niv}", True, (255,255,255))
+    compteur_txt = compteur_nb.render(f"LEVEL : {niv}", True, (255,255,255))
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -193,6 +192,7 @@ while run:
     if all(z["health"] <= 0 for z in zombies):
         niv += 1
         compteur = niv
+        sonvictoire.play()
         
         zombies = ajout_zomb(niv)
         vie_joueur = 100
