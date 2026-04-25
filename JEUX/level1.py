@@ -18,9 +18,9 @@ pygame.mixer.music.load("JEUX/theme.mp3")
 pygame.mixer.music.play(-1) # Plays on loop
 sonzombie=pygame.mixer.Sound("JEUX/zombiebite.mp3")
 sonepee=pygame.mixer.Sound("JEUX/sword1.mp3")
-sonepee=pygame.mixer.Sound("JEUX/sword2.mp3")
+sonepee2=pygame.mixer.Sound("JEUX/sword2.mp3")
 sonvictoire=pygame.mixer.Sound("JEUX/win.mp3")
-sonsepee=[sonepee,sonepee]
+sonsepee=[sonepee,sonepee2]
 
 
 
