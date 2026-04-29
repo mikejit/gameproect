@@ -3,7 +3,7 @@ from utils import *
 import subprocess
 
 
-# MINI
+
 pygame.init()
 screen = pygame.display.set_mode((1200, 580))
 pygame.display.set_caption("PLAY")
